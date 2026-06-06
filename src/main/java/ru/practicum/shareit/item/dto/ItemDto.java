@@ -15,7 +15,7 @@ public class ItemDto {
     private Long ownerId;
     private Long requestId;
 
-    public ItemDto(String name, String description, Boolean available, Long requestId){
+    public ItemDto(String name, String description, Boolean available, Long requestId) {
         this.name = name;
         this.description = description;
         this.available = available;

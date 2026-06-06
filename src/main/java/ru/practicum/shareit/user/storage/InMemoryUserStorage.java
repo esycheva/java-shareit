@@ -37,7 +37,7 @@ public class InMemoryUserStorage implements UserStorage {
 
         Optional<User> theSameEmailUser = findByEmail(user.getEmail());
 
-        if(theSameEmailUser.isPresent()) {
+        if (theSameEmailUser.isPresent()) {
             throw new RuntimeException(String.format("Пользователь с email=%s уже существует", user.getEmail()));
         }
         user.setId(getNextId());
@@ -64,7 +64,7 @@ public class InMemoryUserStorage implements UserStorage {
 
             Optional<User> theSameEmailUser = findByEmail(userDto.getEmail());
 
-            if(theSameEmailUser.isPresent()) {
+            if (theSameEmailUser.isPresent()) {
                 throw new RuntimeException(String.format("Пользователь с email=%s уже существует", userDto.getEmail()));
             }
             oldUser.setEmail(userDto.getEmail());
