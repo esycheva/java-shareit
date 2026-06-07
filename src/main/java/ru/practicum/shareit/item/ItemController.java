@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.Collection;
 import java.util.Optional;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
@@ -31,33 +29,33 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public Optional<ItemDto> findById(@PathVariable long itemId) {
+    public ItemDto findById(@PathVariable String itemId) {
         return service.findById(itemId);
     }
 
     @PostMapping
-    public Item create(@RequestHeader("X-Sharer-User-Id") String userId, @Valid @RequestBody ItemDto itemDto) {
-        System.out.println("THIS IS HEADER " + userId);
-        Item createdItem = service.create(userId, itemDto);
+    public ItemDto create(@RequestHeader("X-Sharer-User-Id") String userId, @Valid @RequestBody ItemDto itemDto) {
+        ItemDto createdItem = service.create(userId, itemDto);
         log.info("Создан пользователь с именем {}.", createdItem.getName());
         return createdItem;
     }
 
     @PatchMapping("/{itemId}")
-    public Item update(@RequestHeader("X-Sharer-User-Id") String userId, @PathVariable String itemId, @Valid @RequestBody ItemDto itemDto) {
-        Item oldItem = service.update(userId, itemId, itemDto);
+    public ItemDto update(@RequestHeader("X-Sharer-User-Id") String userId, @PathVariable String itemId, @Valid @RequestBody ItemDto itemDto) {
+        ItemDto oldItem = service.update(userId, itemId, itemDto);
         log.info("Обновлёна вещь с идентификатором {}.", itemId);
         return oldItem;
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<Item> removerItem(@PathVariable Long itemId) {
-        Optional<Item> optItem = service.removeItem(itemId);
+    public ResponseEntity<ItemDto> removerItem(@PathVariable Long itemId) {
+        ItemDto itemDto = service.removeItem(itemId);
 
-        return optItem.map(item -> ResponseEntity
-                .status(HttpStatus.OK)
-                .body(item)).orElseGet(() -> ResponseEntity
-                .notFound().build());
+        if (itemDto != null) {
+            return ResponseEntity.ok(itemDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/search")

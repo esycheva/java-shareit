@@ -13,9 +13,9 @@ public interface UserStorage {
 
     public User update(Long userId, UserDto userDto);
 
-    public Optional<User> removeUser(Long userId);
+    public User removeUser(Long userId);
 
-    public Optional<User> findById(Long userId);
+    public User findById(Long userId);
 
     public Optional<User> find(Long id);
 }

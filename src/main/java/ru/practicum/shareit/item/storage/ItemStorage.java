@@ -15,9 +15,9 @@ public interface ItemStorage {
 
     public Item update(Long userId, Long itemId, ItemDto itemDto);
 
-    public Optional<Item> removeItem(Long itemId);
+    public Item removeItem(Long itemId);
 
-    public Optional<Item> findById(Long itemId);
+    public Item findById(Long itemId);
 
     public Optional<Item> find(Long id);
 

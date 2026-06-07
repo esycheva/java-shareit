@@ -28,9 +28,15 @@ public class ItemServiceImpl implements ItemService {
         this.itemMapper = itemMapper;
     }
 
-    public Optional<ItemDto> findById(long itemId) {
-        return storage.findById(itemId)
-                .map(itemMapper::toItemDto);
+    public ItemDto findById(String itemId) {
+        Long itemIdL;
+        try {
+            itemIdL = Long.parseLong(itemId);
+        } catch (NumberFormatException e) {
+            throw new NotFoundException("Некорректный id: " + itemId);
+        }
+        Item item = storage.findById(itemIdL);
+        return itemMapper.toItemDto(item);
     }
 
     public Collection<ItemDto> userItems(String userId) {
@@ -40,31 +46,29 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Item> removeItem(Long id) {
-        return storage.removeItem(id);
+    public ItemDto removeItem(Long id) {
+        Item item = storage.removeItem(id);
+        return itemMapper.toItemDto(item);
     }
 
-    public Item create(String userId, ItemDto itemDto) {
+    public ItemDto create(String userId, ItemDto itemDto) {
         Item item = itemMapper.toItem(itemDto);
 
-        Long val = Long.parseLong(userId);
+        Long userIdL = Long.parseLong(userId);
 
-        Optional<User> optUsr = userStorage.findById(val);
+        userStorage.findById(userIdL);
 
-        optUsr.orElseThrow(() -> new NotFoundException(String.format("Пользователь с id=%s не найден", userId)));
+        Item createdItem = storage.create(userIdL, item);
 
-        return storage.create(val, item);
+        return itemMapper.toItemDto(createdItem);
     }
 
-    public Item update(String userId, String itemId, ItemDto itemDto) {
+    public ItemDto update(String userId, String itemId, ItemDto itemDto) {
         Long usrId = Long.parseLong(userId);
         Long itmId = Long.parseLong(itemId);
-
-        Optional<User> optUsr = userStorage.findById(usrId);
-
-        optUsr.orElseThrow(() -> new NotFoundException(String.format("Пользователь с id=%s не найден", userId)));
-
-        return storage.update(usrId, itmId, itemDto);
+        userStorage.findById(usrId);
+        Item updatedItem = storage.update(usrId, itmId, itemDto);
+        return itemMapper.toItemDto(updatedItem);
     }
 
     public Optional<Item> find(Long id) {

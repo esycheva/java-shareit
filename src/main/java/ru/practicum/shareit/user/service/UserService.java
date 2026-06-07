@@ -2,7 +2,9 @@ package ru.practicum.shareit.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
@@ -23,9 +25,9 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public Optional<UserDto> findById(long userId) {
-        return storage.findById(userId)
-                .map(userMapper::toUserDto);
+    public UserDto findById(long userId) {
+        User user = storage.findById(userId);
+        return userMapper.toUserDto(user);
     }
 
     public Collection<UserDto> findAllUsers() {
@@ -34,16 +36,20 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<User> removeUser(Long id) {
-        return storage.removeUser(id);
+    public UserDto removeUser(Long id) {
+        User user = storage.removeUser(id);
+        return userMapper.toUserDto(user);
     }
 
-    public User create(User user) {
-        return storage.create(user);
+    public UserDto create(UserDto userDto) {
+        User user = userMapper.toItem(userDto);
+        User createdUser = storage.create(user);
+        return userMapper.toUserDto(createdUser);
     }
 
-    public User update(Long userId, UserDto userDto) {
-        return storage.update(userId, userDto);
+    public UserDto update(Long userId, UserDto userDto) {
+        User updatedUser = storage.update(userId, userDto);
+        return userMapper.toUserDto(updatedUser);
     }
 
     public Optional<User> find(Long id) {

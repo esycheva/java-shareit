@@ -6,6 +6,7 @@ import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.RecordNotValidException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,8 +72,10 @@ public class InMemoryItemStorage implements ItemStorage {
         return oldItem;
     }
 
-    public Optional<Item> findById(Long itemId) {
-        return find(itemId);
+    public Item findById(Long itemId) {
+        Optional<Item> optItem = find(itemId);
+        optItem.orElseThrow(() -> new NotFoundException(String.format("Вещь с id=%s не найден", itemId)));
+        return optItem.get();
     }
 
     private Long getNextId() {
@@ -90,10 +93,10 @@ public class InMemoryItemStorage implements ItemStorage {
                 .findFirst();
     }
 
-    public Optional<Item> removeItem(Long itemId) {
-        Optional<Item> item = find(itemId);
-        items.remove(itemId);
-        return Optional.of(item.get());
+    public Item removeItem(Long itemId) {
+        Optional<Item> optItem = find(itemId);
+        optItem.orElseThrow(() -> new NotFoundException(String.format("Вещь с id=%s не найден", itemId)));
+        return optItem.get();
     }
 
     public List<Item> search(String text) {

@@ -72,8 +72,10 @@ public class InMemoryUserStorage implements UserStorage {
         return oldUser;
     }
 
-    public Optional<User> findById(Long userId) {
-        return find(userId);
+    public User findById(Long userId) {
+        Optional<User> optUser = find(userId);
+        optUser.orElseThrow(() -> new NotFoundException(String.format("Пользователь с id=%s не найден", userId)));
+        return optUser.get();
     }
 
     private Long getNextId() {
@@ -97,9 +99,9 @@ public class InMemoryUserStorage implements UserStorage {
                 .findFirst();
     }
 
-    public Optional<User> removeUser(Long userId) {
+    public User removeUser(Long userId) {
         Optional<User> user = find(userId);
         users.remove(userId);
-        return Optional.of(user.get());
+        return user.get();
     }
 }

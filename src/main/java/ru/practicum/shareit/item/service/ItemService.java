@@ -9,15 +9,15 @@ import java.util.Optional;
 
 @Service
 public interface ItemService {
-    public Optional<ItemDto> findById(long itemId);
+    public ItemDto findById(String itemId);
 
     public Collection<ItemDto> userItems(String userId);
 
-    public Optional<Item> removeItem(Long id);
+    public ItemDto removeItem(Long id);
 
-    public Item create(String userId, ItemDto itemDto);
+    public ItemDto create(String userId, ItemDto itemDto);
 
-    public Item update(String userId, String itemId, ItemDto itemDto);
+    public ItemDto update(String userId, String itemId, ItemDto itemDto);
 
     public Optional<Item> find(Long id);
 

@@ -5,10 +5,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Data
 public class Item {
     private Long id;

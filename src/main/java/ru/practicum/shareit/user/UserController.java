@@ -28,31 +28,32 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public Optional<UserDto> findById(@PathVariable long userId) {
+    public UserDto findById(@PathVariable long userId) {
         return service.findById(userId);
     }
 
     @PostMapping
-    public User create(@Valid @RequestBody User user) {
-        User createdUser = service.create(user);
+    public UserDto create(@Valid @RequestBody UserDto userDto) {
+        UserDto createdUser = service.create(userDto);
         log.info("Создан пользователь с именем {}.", createdUser.getName());
         return createdUser;
     }
 
     @PatchMapping("/{userId}")
-    public User update(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
-        User oldUser = service.update(userId, userDto);
+    public UserDto update(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        UserDto oldUser = service.update(userId, userDto);
         log.info("Обновлён пользователь с идентификатором {}.", userId);
         return oldUser;
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<User> removerUser(@PathVariable Long userId) {
-        Optional<User> optUser = service.removeUser(userId);
+    public ResponseEntity<UserDto> removerUser(@PathVariable Long userId) {
+        UserDto userDto = service.removeUser(userId);
 
-        return optUser.map(user -> ResponseEntity
-                .status(HttpStatus.OK)
-                .body(user)).orElseGet(() -> ResponseEntity
-                .notFound().build());
+        if (userDto != null) {
+            return ResponseEntity.ok(userDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
