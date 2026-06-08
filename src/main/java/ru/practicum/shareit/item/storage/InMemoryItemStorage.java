@@ -6,7 +6,6 @@ import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.RecordNotValidException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
