@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
@@ -7,11 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Entity
+@Table(name="users", schema="public")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="name", nullable = false)
     private String name;
-    // поле уникально для пользователя
+
     @Email
+    @Column(name="email", nullable = false)
     private String email;
 
     public List<String> validateErrors() {

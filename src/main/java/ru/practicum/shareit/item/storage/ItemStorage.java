@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.storage;
 
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
@@ -22,4 +23,10 @@ public interface ItemStorage {
     public Optional<Item> find(Long id);
 
     public List<Item> search(String text);
+
+    public Comment createComment(Long userId, Long itemId, Comment comment);
+
+    public List<Comment> findComments(Long itemId);
+
+    public List<Comment> findCommentsByItemIds(List<Long> itemIds);
 }
