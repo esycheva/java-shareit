@@ -109,7 +109,7 @@ public class DbItemStorage implements ItemStorage {
             oldItem.setAvailable(itemDto.getAvailable());
         }
         return itemRepository.save(oldItem);
-    };
+    }
 
     public Item removeItem(Long itemId) {
         Item item = itemRepository.findById(itemId)
@@ -117,18 +117,18 @@ public class DbItemStorage implements ItemStorage {
 
         itemRepository.delete(item);
         return item;
-    };
+    }
 
     @Override
     public Item findById(Long itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException(String.format("Вещь с id=%s не найдена", itemId)));
-    };
+    }
 
     @Override
     public Optional<Item> find(Long id) {
         return itemRepository.findById(id);
-    };
+    }
 
     public List<Item> search(String text) {
         if (text == null || text.isBlank()) {

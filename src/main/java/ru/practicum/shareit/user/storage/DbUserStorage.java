@@ -28,7 +28,7 @@ public class DbUserStorage implements UserStorage {
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
-    };
+    }
 
     @Override
     public User create(User user) {
