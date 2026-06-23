@@ -145,4 +145,4 @@ public class DbItemStorage implements ItemStorage {
     public List<Comment> findCommentsByItemIds(List<Long> itemIds) {
         return commentRepository.findAllByItemIdIn(itemIds);
     }
-}
+} 
