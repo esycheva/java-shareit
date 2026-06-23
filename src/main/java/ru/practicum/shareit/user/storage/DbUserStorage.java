@@ -23,7 +23,7 @@ public class DbUserStorage implements UserStorage {
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-    };
+    }
 
     @Override
     public List<User> findAllUsers() {
@@ -85,7 +85,7 @@ public class DbUserStorage implements UserStorage {
     @Override
     public Optional<User> find(Long id) {
         return userRepository.findById(id);
-    };
+    }
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);

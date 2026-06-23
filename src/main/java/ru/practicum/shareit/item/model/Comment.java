@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="comments", schema="public")
+@Table(name = "comments", schema = "public")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

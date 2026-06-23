@@ -14,7 +14,6 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +30,7 @@ public class DbItemStorage implements ItemStorage {
 
     public List<Item> userItems(Long userId) {
         return itemRepository.findByOwnerId(userId);
-    };
+    }
 
     public Item create(Long userId, Item item) {
         if (item.validateErrors().size() > 0) {
@@ -81,7 +80,7 @@ public class DbItemStorage implements ItemStorage {
         return commentRepository.save(comment);
     }
 
-    public Item update(Long userId, Long itemId, ItemDto itemDto){
+    public Item update(Long userId, Long itemId, ItemDto itemDto) {
         if (userId.equals(null)) {
             throw new RecordNotValidException("UserId должен быть указан.");
         }
@@ -112,7 +111,7 @@ public class DbItemStorage implements ItemStorage {
         return itemRepository.save(oldItem);
     };
 
-    public Item removeItem(Long itemId){
+    public Item removeItem(Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException(String.format("Вещь с id=%s не найдена", itemId)));
 
@@ -137,11 +136,11 @@ public class DbItemStorage implements ItemStorage {
         }
 
         return itemRepository.searchAvailableItems(text);
-    };
+    }
 
     public List<Comment> findComments(Long itemId) {
         return commentRepository.findAllByItemId(itemId);
-    };
+    }
 
     public List<Comment> findCommentsByItemIds(List<Long> itemIds) {
         return commentRepository.findAllByItemIdIn(itemIds);

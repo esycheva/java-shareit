@@ -9,27 +9,27 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="items", schema="public")
+@Table(name = "items", schema = "public")
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name="description", nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name="is_available")
+    @Column(name = "is_available")
     private Boolean available;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @Column(name="request_id")
+    @Column(name = "request_id")
     private Long requestId;
 
     public List<String> validateErrors() {

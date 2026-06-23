@@ -122,9 +122,9 @@ public class InMemoryItemStorage implements ItemStorage {
         return new Comment();
     }
 
-    public List<Comment> findComments(Long itemId){
+    public List<Comment> findComments(Long itemId) {
         return new ArrayList<>();
-    };
+    }
 
     public List<Comment> findCommentsByItemIds(List<Long> itemIds) {
         return new ArrayList<>();
