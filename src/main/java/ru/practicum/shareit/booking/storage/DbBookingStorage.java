@@ -65,7 +65,7 @@ public class DbBookingStorage implements BookingStorage {
     public Booking findById(Long bookingId) {
         return bookingRepository.findWithEagerRelationshipsById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Бронирование не найдено"));
-    };
+    }
 
     public List<Booking> getBookingsByBooker(Long bookerId, String state) {
         BookingState bookingState = BookingState.valueOf(state == null ? "ALL" : state.toUpperCase());

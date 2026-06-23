@@ -46,7 +46,7 @@ public class DbUserStorage implements UserStorage {
             throw new RuntimeException(String.format("Пользователь с email=%s уже существует", user.getEmail()));
         }
         return userRepository.save(user);
-    };
+    }
 
     @Override
     public User update(Long userId, UserDto userDto) {
