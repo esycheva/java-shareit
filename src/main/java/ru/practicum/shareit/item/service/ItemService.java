@@ -10,20 +10,20 @@ import java.util.Optional;
 
 @Service
 public interface ItemService {
-    public ItemDto findById(String itemId);
+    ItemDto findById(String itemId);
 
-    public Collection<ItemDto> userItems(String userId);
+    Collection<ItemDto> userItems(String userId);
 
-    public ItemDto removeItem(Long id);
+    ItemDto removeItem(Long id);
 
-    public ItemDto create(String userId, ItemDto itemDto);
+    ItemDto create(String userId, ItemDto itemDto);
 
-    public ItemDto update(String userId, String itemId, ItemDto itemDto);
+    ItemDto update(String userId, String itemId, ItemDto itemDto);
 
-    public Optional<Item> find(Long id);
+    Optional<Item> find(Long id);
 
-    public Collection<ItemDto> search(String text);
+    Collection<ItemDto> search(String text);
 
-    public CommentDto createComment(String userId, String itemId, CommentDto commentDto);
+    CommentDto createComment(String userId, String itemId, CommentDto commentDto);
 
 }
