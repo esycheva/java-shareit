@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserStorage {
-    public List<User> findAllUsers();
+    List<User> findAllUsers();
 
-    public User create(User user);
+    User create(User user);
 
-    public User update(Long userId, UserDto userDto);
+    User update(Long userId, UserDto userDto);
 
-    public User removeUser(Long userId);
+    User removeUser(Long userId);
 
-    public User findById(Long userId);
+    User findById(Long userId);
 
-    public Optional<User> find(Long id);
+    Optional<User> find(Long id);
 }

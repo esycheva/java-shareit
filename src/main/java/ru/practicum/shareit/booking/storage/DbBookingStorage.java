@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.storage;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
@@ -27,6 +28,7 @@ public class DbBookingStorage implements BookingStorage {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public Booking create(Long userId, Booking booking) {
         if (booking.validateErrors().size() > 0) {
             String str = booking.validateErrors()
@@ -39,6 +41,7 @@ public class DbBookingStorage implements BookingStorage {
         return bookingRepository.save(booking);
     }
 
+    @Transactional
     public Booking approve(Long bookingId, Boolean flag) {
         Optional<Booking> bookingOpt = find(bookingId);
         Booking booking = bookingOpt.get();

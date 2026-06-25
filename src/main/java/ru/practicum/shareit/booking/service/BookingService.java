@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingService {
-    public BookingDto create(String userId, BookingDto bookingDto);
+    BookingDto create(String userId, BookingDto bookingDto);
 
-    public BookingDto approved(String userId, String bookingId, String flag);
+    BookingDto approved(String userId, String bookingId, String flag);
 
-    public Optional<Booking> find(Long id);
+    Optional<Booking> find(Long id);
 
-    public BookingDto findById(String userId, long bookingId);
+    BookingDto findById(String userId, long bookingId);
 
-    public List<BookingDto> getBookingsByBooker(Long bookerId, String state);
+    List<BookingDto> getBookingsByBooker(Long bookerId, String state);
 
-    public List<BookingDto> getAllByOwner(Long userId, String state);
+    List<BookingDto> getAllByOwner(Long userId, String state);
 }

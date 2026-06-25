@@ -6,7 +6,6 @@ import ru.practicum.shareit.booking.model.Booking;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface BookingStorage {
 
     public Booking create(Long userId, Booking booking);

@@ -3,12 +3,15 @@ package ru.practicum.shareit.user.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Table(name = "users", schema = "public")
 public class User {
     @Id

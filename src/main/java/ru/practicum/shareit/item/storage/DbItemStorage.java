@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.storage;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.model.Status;
@@ -32,6 +33,7 @@ public class DbItemStorage implements ItemStorage {
         return itemRepository.findByOwnerId(userId);
     }
 
+    @Transactional
     public Item create(Long userId, Item item) {
         if (item.validateErrors().size() > 0) {
             String str = item.validateErrors()
@@ -47,6 +49,7 @@ public class DbItemStorage implements ItemStorage {
         return itemRepository.save(item);
     }
 
+    @Transactional
     public Comment createComment(Long userId, Long itemId, Comment comment) {
         if (comment.validateErrors().size() > 0) {
             String str = comment.validateErrors()
@@ -80,6 +83,7 @@ public class DbItemStorage implements ItemStorage {
         return commentRepository.save(comment);
     }
 
+    @Transactional
     public Item update(Long userId, Long itemId, ItemDto itemDto) {
         if (userId.equals(null)) {
             throw new RecordNotValidException("UserId должен быть указан.");
@@ -111,6 +115,7 @@ public class DbItemStorage implements ItemStorage {
         return itemRepository.save(oldItem);
     }
 
+    @Transactional
     public Item removeItem(Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException(String.format("Вещь с id=%s не найдена", itemId)));

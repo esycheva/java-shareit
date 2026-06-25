@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user.storage;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.RecordNotValidException;
@@ -31,6 +32,7 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
+    @Transactional
     public User create(User user) {
         if (user.validateErrors().size() > 0) {
             String str = user.validateErrors()
@@ -49,6 +51,7 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
+    @Transactional
     public User update(Long userId, UserDto userDto) {
         if (userId.equals(null)) {
             throw new RecordNotValidException("Id должен быть указан.");
@@ -74,6 +77,7 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
+    @Transactional
     public User removeUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(String.format("Пользователь не найден с id: %s", userId)));
