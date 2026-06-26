@@ -3,15 +3,20 @@ package ru.practicum.shareit.item.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.dto.BookingShortDto;
+import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.storage.UserStorage;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,12 +24,16 @@ public class ItemServiceImpl implements ItemService {
     private final ItemStorage storage;
     private final ItemMapper itemMapper;
     private final UserStorage userStorage;
+    private final CommentMapper commentMapper;
+    private final BookingStorage bookingStorage;
 
     @Autowired
-    public ItemServiceImpl(@Qualifier("inMemoryItemStorage") ItemStorage storage, @Qualifier("inMemoryUserStorage") UserStorage userStorage, ItemMapper itemMapper) {
+    public ItemServiceImpl(@Qualifier("dbItemStorage") ItemStorage storage, @Qualifier("dbUserStorage") UserStorage userStorage, @Qualifier("dbBookingStorage") BookingStorage bookingStorage, ItemMapper itemMapper, CommentMapper commentMapper) {
         this.storage = storage;
         this.userStorage = userStorage;
+        this.bookingStorage = bookingStorage;
         this.itemMapper = itemMapper;
+        this.commentMapper = commentMapper;
     }
 
     public ItemDto findById(String itemId) {
@@ -35,14 +44,54 @@ public class ItemServiceImpl implements ItemService {
             throw new NotFoundException("Некорректный id: " + itemId);
         }
         Item item = storage.findById(itemIdL);
-        return itemMapper.toItemDto(item);
+
+        ItemDto itemDto = itemMapper.toItemDto(item);
+
+        List<Comment> comments = storage.findComments(itemIdL);
+
+        itemDto.setComments(comments.stream()
+                .map(commentMapper::toCommentDto)
+                .toList());
+
+        return itemDto;
     }
 
     public Collection<ItemDto> userItems(String userId) {
+        LocalDateTime now = LocalDateTime.now();
+
         Long val = Long.parseLong(userId);
-        return storage.userItems(val).stream()
-                .map(itemMapper::toItemDto)
-                .collect(Collectors.toList());
+
+        List<Item> items = storage.userItems(val);
+
+        List<Long> itemIds = items.stream().map(Item::getId).toList();
+
+        List<Comment> comments = storage.findCommentsByItemIds(itemIds);
+
+        Map<Long, List<CommentDto>> commentsMap = comments
+                .stream()
+                .map(commentMapper::toCommentDto)
+                .collect(Collectors.groupingBy(CommentDto::getItemId));
+
+        return items.stream()
+                .map(item -> {
+                    ItemDto dto = itemMapper.toItemDto(item);
+
+                    bookingStorage.lastBooking(item.getId())
+                                    .ifPresent(booking -> dto.setLastBooking(BookingShortDto.builder()
+                                            .id(booking.getId())
+                                            .bookerId(booking.getBooker().getId())
+                                            .build()));
+
+                    bookingStorage.nextBooking(item.getId())
+                            .ifPresent(booking -> dto.setLastBooking(BookingShortDto.builder()
+                                    .id(booking.getId())
+                                    .bookerId(booking.getBooker().getId())
+                                    .build()));
+
+                    dto.setComments(commentsMap.getOrDefault(item.getId(), Collections.emptyList()));
+                    return dto;
+                })
+                .toList();
     }
 
     public ItemDto removeItem(Long id) {
@@ -60,6 +109,19 @@ public class ItemServiceImpl implements ItemService {
         Item createdItem = storage.create(userIdL, item);
 
         return itemMapper.toItemDto(createdItem);
+    }
+
+    public CommentDto createComment(String userId, String itemId, CommentDto commentDto) {
+        Comment comment = commentMapper.toComment(commentDto);
+
+        Long userIdL = Long.parseLong(userId);
+        Long itemIdL = Long.parseLong(itemId);
+
+        userStorage.findById(userIdL);
+
+        Comment createdComment = storage.createComment(userIdL, itemIdL, comment);
+
+        return commentMapper.toCommentDto(createdComment);
     }
 
     public ItemDto update(String userId, String itemId, ItemDto itemDto) {

@@ -18,7 +18,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Autowired
-    public UserService(@Qualifier("inMemoryUserStorage") UserStorage storage, UserMapper userMapper) {
+    public UserService(@Qualifier("dbUserStorage") UserStorage storage, UserMapper userMapper) {
         this.storage = storage;
         this.userMapper = userMapper;
     }

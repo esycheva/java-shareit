@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.RecordNotValidException;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +23,7 @@ public class InMemoryItemStorage implements ItemStorage {
 
     public List<Item> userItems(Long userId) {
         return items.values().stream()
-                .filter(item -> item.getOwnerId().equals(userId))
+                .filter(item -> item.getOwner().getId().equals(userId))
                 .toList();
     }
 
@@ -33,7 +35,9 @@ public class InMemoryItemStorage implements ItemStorage {
 
             throw new RecordNotValidException(str);
         }
-        item.setOwnerId(userId);
+        User user = new User();
+        user.setId(userId);
+        item.setOwner(user);
         item.setId(getNextId());
         items.put(item.getId(), item);
         return item;
@@ -54,7 +58,9 @@ public class InMemoryItemStorage implements ItemStorage {
 
         Item oldItem = items.get(itemId);
 
-        oldItem.setOwnerId(userId);
+        User user = new User();
+        user.setId(userId);
+        oldItem.setOwner(user);
 
         if (itemDto.getName() != null && !itemDto.getName().isBlank()) {
             oldItem.setName(itemDto.getName());
@@ -110,5 +116,17 @@ public class InMemoryItemStorage implements ItemStorage {
                 .filter(item -> item.getName().toLowerCase().contains(query)
                         || item.getDescription().toLowerCase().contains(query))
                 .collect(Collectors.toList());
+    }
+
+    public Comment createComment(Long userId, Long itemId, Comment comment) {
+        return new Comment();
+    }
+
+    public List<Comment> findComments(Long itemId) {
+        return new ArrayList<>();
+    }
+
+    public List<Comment> findCommentsByItemIds(List<Long> itemIds) {
+        return new ArrayList<>();
     }
 }
