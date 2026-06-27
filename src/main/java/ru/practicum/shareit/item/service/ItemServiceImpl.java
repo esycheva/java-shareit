@@ -102,11 +102,14 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto create(String userId, ItemDto itemDto) {
         Item item = itemMapper.toItem(itemDto);
 
+        System.out.println(item);
+
         Long userIdL = Long.parseLong(userId);
+        Long requestId = itemDto.getRequestId();
 
         userStorage.findById(userIdL);
 
-        Item createdItem = storage.create(userIdL, item);
+        Item createdItem = storage.create(userIdL, requestId, item);
 
         return itemMapper.toItemDto(createdItem);
     }

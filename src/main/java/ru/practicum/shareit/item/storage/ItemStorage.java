@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ItemStorage {
     List<Item> userItems(Long userId);
 
-    Item create(Long userId, Item item);
+    Item create(Long userId, Long requestId, Item item);
 
     Item update(Long userId, Long itemId, ItemDto itemDto);
 

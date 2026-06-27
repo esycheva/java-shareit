@@ -12,6 +12,8 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -28,13 +30,14 @@ public class DbItemStorage implements ItemStorage {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     public List<Item> userItems(Long userId) {
         return itemRepository.findByOwnerId(userId);
     }
 
     @Transactional
-    public Item create(Long userId, Item item) {
+    public Item create(Long userId, Long requestId, Item item) {
         if (item.validateErrors().size() > 0) {
             String str = item.validateErrors()
                     .stream()
@@ -42,10 +45,16 @@ public class DbItemStorage implements ItemStorage {
 
             throw new RecordNotValidException(str);
         }
+
         User owner = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-
         item.setOwner(owner);
+
+        if (requestId != null) {
+            ItemRequest request = itemRequestRepository.findById(requestId)
+                    .orElseThrow(() -> new NotFoundException("Запрос не найден"));
+            item.setRequest(request);
+        }
         return itemRepository.save(item);
     }
 

@@ -27,7 +27,7 @@ public class InMemoryItemStorage implements ItemStorage {
                 .toList();
     }
 
-    public Item create(Long userId, Item item) {
+    public Item create(Long userId, Long requestId, Item item) {
         if (item.validateErrors().size() > 0) {
             String str = item.validateErrors()
                     .stream()
