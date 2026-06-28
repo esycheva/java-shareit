@@ -34,9 +34,6 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     public BookingDto approve(@RequestHeader("X-Sharer-User-Id") String userId, @PathVariable String bookingId, @RequestParam(name = "approved") String approved) {
-        System.out.println(userId);
-        System.out.println(bookingId);
-        System.out.println(approved);
         BookingDto oldBooking = service.approved(userId, bookingId, approved);
         log.info("Обновлено бронирование с идентификатором {}.", bookingId);
         return oldBooking;
