@@ -26,16 +26,12 @@ public class ItemRequestController {
         return createdRequest;
     }
 
-    // GET /requests
-    // получить список своих запросов вместе с данными об ответах на них
     @GetMapping
     public List<ItemRequestDto> getAllByItemRequests(
             @RequestHeader("X-Sharer-User-Id") String userId) {
         return service.getItemRequestsByRequestor(userId);
     }
 
-    // GET /requests/all
-    // запросы других пользователей
     @GetMapping("/all")
     public Collection<ItemRequestDto> findAllItemRequests() {
         return service.findAllItemRequests();
@@ -45,7 +41,4 @@ public class ItemRequestController {
     public ItemRequestDto findById(@RequestHeader("X-Sharer-User-Id") String userId, @PathVariable String requestId) {
         return service.findById(userId, requestId);
     }
-
-    // Добавьте поле requestId в тело запроса POST /items.
-    // Обратите внимание: должна сохраниться возможность добавить вещь и без указания requestId.
 }
