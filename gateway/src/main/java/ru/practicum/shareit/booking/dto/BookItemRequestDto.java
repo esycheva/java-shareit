@@ -4,17 +4,29 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookItemRequestDto {
-	private long itemId;
+	private Long id;
+
+	@NotNull(message = "Дата начала бронирования обязательна")
 	@FutureOrPresent
 	private LocalDateTime start;
+
+	@NotNull(message = "Дата окончания бронирования обязательна")
 	@Future
 	private LocalDateTime end;
+	private Long itemId;
+	private Long bookerId;
+	private BookingState state;
+	private ItemDto item;
+	private UserDto booker;
 }
