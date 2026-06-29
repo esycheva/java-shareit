@@ -83,7 +83,7 @@ public class ItemServiceImpl implements ItemService {
                                             .build()));
 
                     bookingStorage.nextBooking(item.getId())
-                            .ifPresent(booking -> dto.setLastBooking(BookingShortDto.builder()
+                            .ifPresent(booking -> dto.setNextBooking(BookingShortDto.builder()
                                     .id(booking.getId())
                                     .bookerId(booking.getBooker().getId())
                                     .build()));
