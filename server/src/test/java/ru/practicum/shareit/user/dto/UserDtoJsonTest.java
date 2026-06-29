@@ -28,8 +28,7 @@ class UserDtoJsonTest {
     @DisplayName("Проверка десериализации UserDto")
     void testDeserialize() throws Exception {
         String content = """
-                {
-                  "id": 1,
+                {"id": 1,
                   "name": "Ivan",
                   "email": "ivan@mail.com"
                 }
