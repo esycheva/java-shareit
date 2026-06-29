@@ -20,11 +20,9 @@ public class BookItemRequestDto {
 	private Long id;
 
 	@NotNull(message = "Дата начала бронирования обязательна")
-	@FutureOrPresent
 	private LocalDateTime start;
 
 	@NotNull(message = "Дата окончания бронирования обязательна")
-	@Future
 	private LocalDateTime end;
 	private Long itemId;
 	private Long bookerId;
