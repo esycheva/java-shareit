@@ -27,14 +27,12 @@ class ItemServiceIntegrationTest {
 
     @Test
     void userItems_shouldReturnCorrectItemsWithFullFields() {
-        // Создаем владельца
         UserDto ownerDto = new UserDto();
         ownerDto.setName("Owner");
         ownerDto.setEmail("owner@mail.com");
         UserDto savedOwner = userService.create(ownerDto);
         String ownerId = String.valueOf(savedOwner.getId());
 
-        // Создаем вещи для владельца
         ItemDto item1 = new ItemDto();
         item1.setName("Hammer");
         item1.setDescription("Heavy hammer");
@@ -47,7 +45,6 @@ class ItemServiceIntegrationTest {
         item2.setAvailable(false);
         itemService.create(ownerId, item2);
 
-        // Создаем другого пользователя и его вещь (для проверки фильтрации)
         UserDto otherUserDto = new UserDto();
         otherUserDto.setName("Other");
         otherUserDto.setEmail("other@mail.com");
