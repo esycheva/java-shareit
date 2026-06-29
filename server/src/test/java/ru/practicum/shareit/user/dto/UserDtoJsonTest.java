@@ -27,12 +27,7 @@ class UserDtoJsonTest {
     @Test
     @DisplayName("Проверка десериализации UserDto")
     void testDeserialize() throws Exception {
-        String content = """
-                {"id": 1,
-                  "name": "Ivan",
-                  "email": "ivan@mail.com"
-                }
-                """;
+        String content = "{\"id\":1,\"name\":\"Ivan\",\"email\":\"ivan@mail.com\"}";
 
         UserDto userDto = json.parseObject(content);
 
