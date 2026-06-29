@@ -27,9 +27,9 @@ public class ShareitExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
-    @ExceptionHandler(Throwable.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleThrowable(Throwable ex) {
+    public ErrorResponse handleException(Exception ex) {
         log.error("Произошла непредвиденная ошибка: {}", ex.getMessage(), ex);
         return new ErrorResponse("Произошла внутренняя ошибка сервера.");
     }
