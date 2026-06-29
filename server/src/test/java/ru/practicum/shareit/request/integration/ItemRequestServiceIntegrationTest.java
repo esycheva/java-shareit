@@ -12,7 +12,6 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -30,17 +29,14 @@ class ItemRequestServiceIntegrationTest {
 
     @Test
     void saveItemRequest_shouldReturnDtoAndPersistInDb() {
-        // given
         User user = makeUser("Ivan", "ivan@mail.ru");
         em.persist(user);
 
         ItemRequestDto inputDto = new ItemRequestDto();
         inputDto.setDescription("Need a hammer for home repair");
 
-        // when
         ItemRequestDto result = service.create(String.valueOf(user.getId()), inputDto);
 
-        // then
         assertThat(result.getId(), notNullValue());
         assertThat(result.getDescription(), equalTo(inputDto.getDescription()));
         assertThat(result.getCreated(), notNullValue());
